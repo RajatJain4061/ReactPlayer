@@ -1,25 +1,52 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Playlist from './components/Playlist';
+
 import './App.css';
 
 class App extends Component {
+
+  playlist = [{
+    url:'https://vimeo.com/90509568',
+    title: 'Vimeo video',
+    previewStartTime: '10',
+    previewStopTime: '20',
+    frameHeight: "100%",
+    frameWidth:"100%"
+  },{
+    url:'https://www.youtube.com/watch?v=oUFJJNQGwhk',
+    title: 'Youtube Video',
+    previewStartTime: '40',
+    previewStopTime: '60',
+    frameHeight: "100%",
+    frameWidth:"100%"
+  },{
+    url:'https://soundcloud.com/miami-nights-1984/accelerated',
+    title: 'Sound Cloud',
+    previewStartTime: '40',
+    previewStopTime: '60',
+    frameHeight: "100%",
+    frameWidth:"100%"
+  },{
+    url:'https://www.facebook.com/facebook/videos/10153231379946729/',
+    title: 'Facebook Video',
+    previewStartTime: '40',
+    previewStopTime: '60',
+    frameHeight: "100%",
+    frameWidth:"100%"
+  },{
+    url:'https://www.youtube.com/watch?v=oUFJJNQGwhk',
+    title: 'Youtube Video',
+    previewStartTime: '40',
+    previewStopTime: '60',
+    frameHeight: "100%",
+    frameWidth:"100%"
+  }];
+
   render() {
+  
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className="App">          
+          <Playlist playlist={this.playlist} />
       </div>
     );
   }
