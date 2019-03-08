@@ -102,6 +102,7 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         var timeInSec =  seconds < 10 ?'0'+seconds.toString() : seconds.toString();
         duration = timeInMin +':'+ timeInSec
         }
+        
         const {handler, ...playerProps} = this.props
          
         return (

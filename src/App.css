@@ -73,6 +73,15 @@
     justify-content: center;
 }
 
+.player-wrapper-block {
+    margin-top: 40px;
+    margin-bottom: 10px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .player-wrapper-large {
     margin-top: 40px;
     margin-bottom: 10px;
@@ -182,4 +191,40 @@
     margin-top: 15px;
     height: 5px;
     position: absolute;
+}
+
+.progress-block {
+    z-index: 3;
+    background-color: #FFB6C1;
+    width: 400px;
+    margin-top: 13px;
+    height: 5px;
+    position: absolute;
+}
+
+.nav-controls-block {
+    position: absolute;
+    width: 50px;
+    display: flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    border-radius: 25px;
+    background-color: rgba(0,0,0,.5);   
+}
+
+.playback-time-list {
+    font-size: 12px;
+    margin-left: 10px;
+    font-weight: 700;
+    color: #FFF;
+}
+
+.playback-time-block {
+    font-size: 12px;
+    margin-right: 340px;
+    margin-top: 190px;
+    font-weight: 700;
+    color: #FFF;
 }

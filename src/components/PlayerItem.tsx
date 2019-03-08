@@ -95,6 +95,7 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
     }
 
     stopPreview = () => {
+        this.player.current
         if(this.player.current!==null){
             if(this.state.isPreviewing && parseInt(Math.round(this.player.current.getCurrentTime()).toFixed(0)) === this.props.preview_stop_time){            
                 this.setState({ isPreviewing: false, playing: false}, () => {
@@ -108,20 +109,36 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         const { playing, played } = this.state;
 
         const {isplaying, handler,list, ...playerProps} = this.props
+
+        var duration = '0';
+        if(this.player.current !== null){
+            let totalTime = this.player.current.getDuration();
+            let minutes = Math.floor(totalTime / 60)
+            let seconds = Math.trunc(totalTime - minutes * 60);
+            var timeInMin = minutes < 10 ? '0' + minutes.toString() : minutes.toString(); 
+            var timeInSec =  seconds < 10 ? '0' + seconds.toString() : seconds.toString();
+            duration = timeInMin +':'+ timeInSec
+        }
          
         return (
             <div className = "player-view">
-                <div className="player-wrapper" onClick={this.togglePreview} onMouseOver={this.togglePreview} onMouseOut={this.togglePreview} >
-                    <ReactPlayer {...playerProps} onProgress={e => this.progress(e)}  ref={this.player} playing={playing} />
-                   { list?
-                    <div className="nav-controls-list" onClick={this.onClickFullscreen}>
-                    <img className="img-expand-list" src={expand}  height="15"  width="15"/> 
-                    <Progress className="progress-list" bar  value={played} max={10} />
+                <div className= {list ? "player-wrapper" : "player-wrapper-block"}  onClick={this.togglePreview} onMouseOver={this.togglePreview} onMouseOut={this.togglePreview}>
+                    <ReactPlayer playsinline {...playerProps} onProgress={e => this.progress(e)}  ref={this.player} playing={playing} />
+                    { 
+                       list?
+                        <div className="nav-controls-list" onClick={this.onClickFullscreen}>
+                            <img className="img-expand-list" src={expand}  height="15"  width="15"/> 
+                            <text className="playback-time-list">{duration}</text>
+                        </div>
+                        :
+                        <div className="nav-controls-block" onClick={this.onClickFullscreen}>
+                            <img className="img-expand" src={expand}  height="15"  width="15"/> 
+                            <text className="playback-time-block">{duration}</text>
+                        </div>
+                    }
+                    <div className="nav-controls-list">
+                        {list ? <Progress className="progress-list" bar  value={played} max={10} /> : <Progress className="progress-block" bar  value={played} max={10} /> }
                     </div>
-                   : <div className="controls" onClick={this.onClickFullscreen}>
-                   <img className="img-expand" src={expand}  height="20"  width="20"/> 
-                   </div>}
-                  
                 </div>
             </div>
         );
