@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
 import './../App.css';
-import expand from '../icons/expand.png';
-import { findDOMNode } from 'react-dom';
-import  screenfull from 'screenfull';
+import play from '../icons/play.png';
+import pause from '../icons/pause.png';
 import { Progress } from 'reactstrap';
 
 interface PlayerItemProps {
@@ -11,11 +10,9 @@ interface PlayerItemProps {
     preview_start_time:number,
     preview_stop_time: number,
     width:string,
-    list: boolean,
     height:string,
     playsinline:boolean,
     title:string,
-    isplaying:boolean,
     handler:any,
     url:string,
 }
@@ -23,14 +20,15 @@ interface PlayerItemProps {
 interface PlayerItemState {
     isPreviewing:boolean,
     playing:boolean,
-    currentTime: number,
-    played: number,
+    loaded: number;
+    played: number;
+    currentTime: string,
 }
 
 class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> {
     private player: React.RefObject<ReactPlayer>;
     private intervalHandle: ReturnType<typeof setTimeout> = setTimeout(() => '', 1000);
-   
+
     constructor(props:PlayerItemProps){
         super(props);
         this.togglePlayPause = this.togglePlayPause.bind(this);
@@ -43,21 +41,12 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
     state:PlayerItemState = {
         isPreviewing: false,
         playing:false,
-        currentTime: 0,
+        currentTime: '',
+        loaded: 0,
         played: 0,
     }
 
-    componentWillReceiveProps(nextProps:PlayerItemProps){
-        this.setState({
-            playing: nextProps.isplaying
-        })
-    }
-
-    onClickFullscreen() {
-       
-    }
-
-    togglePlayPause = () => {
+    togglePlayPause = () => {   
         this.setState({
             playing: !this.state.playing,
             isPreviewing: this.state.playing
@@ -72,14 +61,11 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         const totalTime =  e.playedSeconds;
         var minutes = Math.floor(totalTime/ 60)
         var seconds = Math.trunc(totalTime - minutes * 60);
-        if(seconds > 10 && this.player.current!==null)
-        {
-            this.player.current.seekTo(this.props.preview_start_time)
-        } else {
-            this.setState({played: seconds})
-        }
+        var timeInMin = minutes < 10 ?'0'+minutes.toString() : minutes.toString(); 
+        var timeInSec =  seconds < 10 ?'0'+seconds.toString() : seconds.toString();
+        var time = timeInMin + ':' + timeInSec
+        this.setState({currentTime: time, played: e.played, loaded: e.loaded})
       }
-
 
     togglePreview = () => {
         if(this.state.isPreviewing){
@@ -105,23 +91,37 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
     }
 
     render = () => {
-        const { playing, played } = this.state;
+        const { playing, currentTime, loaded, played } = this.state;
 
-        const {isplaying, handler,list, ...playerProps} = this.props
+        var duration = '0';
+        if(this.player.current!==null){
+        let totalTime = this.player.current.getDuration();
+        let minutes = Math.floor(totalTime / 60)
+        let  seconds = Math.trunc(totalTime - minutes * 60);
+        var timeInMin = minutes < 10 ?'0'+minutes.toString() : minutes.toString(); 
+        var timeInSec =  seconds < 10 ?'0'+seconds.toString() : seconds.toString();
+        duration = timeInMin +':'+ timeInSec
+        }
+        const {handler, ...playerProps} = this.props
          
         return (
             <div className = "player-view">
-                <div className="player-wrapper" onClick={this.togglePreview} onMouseOver={this.togglePreview} onMouseOut={this.togglePreview} >
-                    <ReactPlayer {...playerProps} onProgress={e => this.progress(e)}  ref={this.player} playing={playing} />
-                   { list?
-                    <div className="nav-controls-list" onClick={this.onClickFullscreen}>
-                    <img className="img-expand-list" src={expand}  height="15"  width="15"/> 
-                    <Progress className="progress-list" bar  value={played} max={10} />
+                <div className="player-wrapper-large" onClick={this.togglePlayPause}>
+                    <ReactPlayer {...playerProps} onProgress={e => this.progress(e)} ref={this.player} playing={playing} />
+                    <h2 className="video-title">{this.props.title}</h2>
+                   { !playing ? <div className="controls">
+                    <img className="imgPlay" src={play} onClick={this.togglePlayPause} height="35"  width="35"/> 
+                    </div> : null }
+                    <div className="nav-controls">
+                    { !playing ? 
+                    <img className="img-play-pause" src={play} onClick={this.togglePlayPause} height="20"  width="20"/> 
+                     : <img className="img-play-pause" src={pause} onClick={this.togglePlayPause} height="20"  width="20"/> }
+                    <text className="playback-time">
+                    {currentTime}/{duration}
+                    </text>
+                    <Progress className="progress" bar  value={played} max={1} />
+                    <Progress className="progress-loaded" bar  value={loaded} max={1} />
                     </div>
-                   : <div className="controls" onClick={this.onClickFullscreen}>
-                   <img className="img-expand" src={expand}  height="20"  width="20"/> 
-                   </div>}
-                  
                 </div>
             </div>
         );

@@ -1,41 +1,185 @@
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+    animation: App-logo-spin infinite 20s linear;
+    height: 40vmin;
+    pointer-events: none;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
+}
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.video-list {
+    display: flex;
+    margin-top: 10px;
+    align-self: center;
+    flex: 1;
+    margin-left: 10px;
+    flex-direction: row;
+}
+
+.video-block {
+    display: flex;
+    margin-top: 50px;
+    flex: 1;
+    padding-left: 50px;
+    flex-direction: column;
+}
+
+.video-large {
+    display: flex;
+    flex: 1;
+    height: 450px;
+    width: "100%";
+    margin-top: 50px;
+    align-content: center;
+    justify-content: center;
+
+}
+
+.player-view {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .player-wrapper {
-  width: 240px;
-  height: 135px;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 40px;
+    justify-content: center;
 }
 
-button.player-controls {
-  margin:10px;
-  background: #282c34;
-  color:#FFF;
-  padding: 5px;
+.player-wrapper-large {
+    margin-top: 40px;
+    margin-bottom: 10px;
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.video-title {
+    display: block;
+    height: 370px;
+    margin-bottom: 300px;
+    margin-left: 10px;
+    font-size: 16px;
+    color: #FFF;
+    position: absolute;
+}
+
+.imgPlay {
+    position: absolute;
+    z-index: 3;
+}
+
+.nav-controls {
+    width: 700px;
+    height: 25px;
+    margin-top: 180px;
+    align-items: center;
+    position: absolute;
+    align-self: center;
+    flex-direction: row;
+    justify-content: space-between;
+    display: flex;
+}
+
+.img-play-pause {
+    position: absolute;
+    z-index: 3;
+    margin-left: 10px;
+}
+
+.img-expand {
+    position: absolute;
+    z-index: 3;
+}
+
+.playback-time {
+    font-size: 12px;
+    width: 100px;
+    margin-left: 600px;
+    font-weight: 700;
+    color: #FFF;
+}
+
+.progress {
+    z-index: 3;
+    background-color: #FFB6C1;
+    width: 700px;
+    margin-top: 14px;
+    height: 5px;
+    position: absolute;
+}
+.progress-loaded {
+    z-index: 2;
+    background-color: #585858;
+    width: 700px;
+    margin-top: 14px;
+    height: 5px;
+    position: absolute;
+}
+
+.controls {
+    position: absolute;
+    width: 90px;
+    display: flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    height: 90px;
+    border-radius: 45px;
+    background-color: rgba(0,0,0,.5);
+}
+
+.nav-controls-list {
+    width: 400px;
+    height: 25px;
+    margin-top: 95px;
+    align-items: center;
+    position: absolute;
+    align-self: center;
+    flex-direction: row;
+    justify-content: space-between;
+    display: flex;
+}
+
+.img-expand-list {
+    position: absolute;
+    z-index: 3;
+    margin-left: 370px;
+}
+
+.progress-list {
+    z-index: 3;
+    background-color: #FFB6C1;
+    width: 400px;
+    margin-top: 15px;
+    height: 5px;
+    position: absolute;
 }
