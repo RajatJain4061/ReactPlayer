@@ -8,6 +8,7 @@ interface PlaylistProps {
 
 interface PlayerItemState {
     currentPlaying : any
+    currentPlayingIndex: number,
 }
 
 class Playlist extends Component < PlaylistProps,
@@ -21,14 +22,20 @@ PlayerItemState > {
 
     state : PlayerItemState = {
         currentPlaying: undefined,
+        currentPlayingIndex: 1,
     }
 
     handler = (key : string) => {
         this.setState({currentPlaying: key})
     }
 
+    onClickFullscreen = (id: number) => {
+        this.setState({currentPlayingIndex: id})  
+        console.log(id)
+    }
+
     render() {
-        const {currentPlaying} = this.state
+        const {currentPlaying, currentPlayingIndex} = this.state
         return (
             <div className="video-player">
                 <div className="video-list">
@@ -44,6 +51,7 @@ PlayerItemState > {
                             item_id={key} 
                             list={true}
                             url={element.url}
+                            current_playing={this.onClickFullscreen}
                             preview_start_time={element.previewStartTime} 
                             preview_stop_time={element.previewStopTime} 
                             width={element.frameWidth}
@@ -68,6 +76,7 @@ PlayerItemState > {
                             item_id={key} 
                             url={element.url}
                             list={false}
+                            current_playing={this.onClickFullscreen}
                             preview_start_time={element.previewStartTime} 
                             preview_stop_time={element.previewStopTime} 
                             width={element.frameWidth}
@@ -81,7 +90,7 @@ PlayerItemState > {
                 </div>
                 <div className="video-large">
                 {this.props.playlist.map((element : any, key : any) => {
-                    if(key === 1) {
+                    if(key === currentPlayingIndex) {
                     return <ReactPlayer key={key}
                     item_id={key} 
                     url={element.url}

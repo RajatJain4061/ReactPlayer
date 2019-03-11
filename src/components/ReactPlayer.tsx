@@ -3,6 +3,8 @@ import ReactPlayer from 'react-player';
 import './../App.css';
 import play from '../icons/play.png';
 import pause from '../icons/pause.png';
+import volume from '../icons/volume.png';
+import mute from '../icons/mute.png';
 import { Progress } from 'reactstrap';
 
 interface PlayerItemProps {
@@ -20,6 +22,7 @@ interface PlayerItemProps {
 interface PlayerItemState {
     isPreviewing:boolean,
     playing:boolean,
+    volumeOn: boolean,
     loaded: number;
     played: number;
     currentTime: string,
@@ -42,6 +45,7 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         isPreviewing: false,
         playing:false,
         currentTime: '',
+        volumeOn: true,
         loaded: 0,
         played: 0,
     }
@@ -67,6 +71,10 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         this.setState({currentTime: time, played: e.played, loaded: e.loaded})
       }
 
+    toggleVolume = () => {
+        this.setState({ volumeOn: !this.state.volumeOn})
+    } 
+
     togglePreview = () => {
         if(this.state.isPreviewing){
             clearInterval(this.intervalHandle)
@@ -76,7 +84,6 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
             }
             this.intervalHandle = setInterval(this.stopPreview, 1000);
         }
-
         this.setState({ playing: !this.state.playing, isPreviewing: !this.state.isPreviewing })
     }
 
@@ -91,7 +98,7 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
     }
 
     render = () => {
-        const { playing, currentTime, loaded, played } = this.state;
+        const { playing, currentTime, loaded, played, volumeOn } = this.state;
 
         var duration = '0';
         if(this.player.current!==null){
@@ -107,8 +114,8 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
          
         return (
             <div className = "player-view">
-                <div className="player-wrapper-large" onClick={this.togglePlayPause}>
-                    <ReactPlayer {...playerProps} onProgress={e => this.progress(e)} ref={this.player} playing={playing} />
+                <div className="player-wrapper-large" >
+                    <ReactPlayer {...playerProps} muted={!volumeOn} onProgress={e => this.progress(e)} ref={this.player} playing={playing} />
                     <h2 className="video-title">{this.props.title}</h2>
                    { !playing ? <div className="controls">
                     <img className="imgPlay" src={play} onClick={this.togglePlayPause} height="35"  width="35"/> 
@@ -117,6 +124,10 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
                     { !playing ? 
                     <img className="img-play-pause" src={play} onClick={this.togglePlayPause} height="20"  width="20"/> 
                      : <img className="img-play-pause" src={pause} onClick={this.togglePlayPause} height="20"  width="20"/> }
+                     { volumeOn ? 
+                     <img className="img-volume" src={volume} onClick={this.toggleVolume} height="20"  width="20"/> : 
+                     <img className="img-volume" src={mute} onClick={this.toggleVolume} height="20"  width="20"/>
+                     }
                     <text className="playback-time">
                     {currentTime}/{duration}
                     </text>

@@ -5,15 +5,18 @@ import expand from '../icons/expand.png';
 import { findDOMNode } from 'react-dom';
 import  screenfull from 'screenfull';
 import { Progress } from 'reactstrap';
+import volume from '../icons/volume.png';
+import mute from '../icons/mute.png';
 
 interface PlayerItemProps {
-    item_id:string,
+    item_id:number,
     preview_start_time:number,
     preview_stop_time: number,
     width:string,
     list: boolean,
     height:string,
     playsinline:boolean,
+    current_playing: any,
     title:string,
     isplaying:boolean,
     handler:any,
@@ -24,6 +27,7 @@ interface PlayerItemState {
     isPreviewing:boolean,
     playing:boolean,
     currentTime: number,
+    volumneOn:boolean,
     played: number,
 }
 
@@ -35,6 +39,7 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         super(props);
         this.togglePlayPause = this.togglePlayPause.bind(this);
         this.togglePreview = this.togglePreview.bind(this);
+        this.onViewExpand = this.onViewExpand.bind(this);
         this.stopPreview = this.stopPreview.bind(this);
         this.player = React.createRef();
         this.intervalHandle;    
@@ -44,6 +49,7 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         isPreviewing: false,
         playing:false,
         currentTime: 0,
+        volumneOn: true,
         played: 0,
     }
 
@@ -51,10 +57,6 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         this.setState({
             playing: nextProps.isplaying
         })
-    }
-
-    onClickFullscreen() {
-       
     }
 
     togglePlayPause = () => {
@@ -80,6 +82,9 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         }
       }
 
+    onViewExpand = (id: any) => {
+        this.props.current_playing(id)
+    }
 
     togglePreview = () => {
         if(this.state.isPreviewing){
@@ -105,10 +110,14 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         }
     }
 
-    render = () => {
-        const { playing, played } = this.state;
+    toggleVolume = () => {
+        this.setState({ volumneOn : !this.state.volumneOn})
+    } 
 
-        const {isplaying, handler,list, ...playerProps} = this.props
+    render = () => {
+        const { playing, played, volumneOn } = this.state;
+
+        const {isplaying, handler,list,current_playing, item_id , ...playerProps} = this.props
 
         var duration = '0';
         if(this.player.current !== null){
@@ -123,16 +132,20 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         return (
             <div className = "player-view">
                 <div className= {list ? "player-wrapper" : "player-wrapper-block"}  onClick={this.togglePreview} onMouseOver={this.togglePreview} onMouseOut={this.togglePreview}>
-                    <ReactPlayer playsinline {...playerProps} onProgress={e => this.progress(e)}  ref={this.player} playing={playing} />
-                    { 
+                    <ReactPlayer playsinline muted={!volumneOn}  {...playerProps} onProgress={e => this.progress(e)}  ref={this.player} playing={playing} />
+                    {
                        list?
-                        <div className="nav-controls-list" onClick={this.onClickFullscreen}>
-                            <img className="img-expand-list" src={expand}  height="15"  width="15"/> 
+                        <div className="nav-controls-list" >
+                        { volumneOn  ? 
+                             <img className="img-volume-block" src={volume} onClick={this.toggleVolume} height="15"  width="15"/> : 
+                             <img className="img-volume-block" src={mute} onClick={this.toggleVolume} height="15"  width="15"/>
+                            } 
                             <text className="playback-time-list">{duration}</text>
+                            <img className="img-expand-list"  onClick={() => this.onViewExpand(item_id)} src={expand}  height="15"  width="15"/>
                         </div>
                         :
-                        <div className="nav-controls-block" onClick={this.onClickFullscreen}>
-                            <img className="img-expand" src={expand}  height="15"  width="15"/> 
+                        <div className="nav-controls-block" >
+                            <img className="img-expand" src={expand} onClick={()=> this.onViewExpand(item_id)} height="15"  width="15"/> 
                             <text className="playback-time-block">{duration}</text>
                         </div>
                     }

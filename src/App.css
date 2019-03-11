@@ -132,7 +132,7 @@
 .playback-time {
     font-size: 12px;
     width: 100px;
-    margin-left: 600px;
+    margin-left: 550px;
     font-weight: 700;
     color: #FFF;
 }
@@ -179,9 +179,9 @@
 }
 
 .img-expand-list {
-    position: absolute;
     z-index: 3;
-    margin-left: 370px;
+    margin-left: 300px;
+    margin-right: 20px;
 }
 
 .progress-list {
@@ -227,4 +227,13 @@
     margin-top: 190px;
     font-weight: 700;
     color: #FFF;
+}
+
+.img-volume {
+    margin-left: 40px;
+}
+
+.img-volume-block {
+    margin-left: 10px;
+    z-index: 3;
 }
