@@ -27,20 +27,18 @@
     }
 }
 
-.video-list {
+.video-block {
     display: flex;
     margin-top: 10px;
     align-self: center;
     flex: 1;
-    margin-left: 10px;
     flex-direction: row;
 }
 
-.video-block {
+.video-list {
     display: flex;
     margin-top: 50px;
     flex: 1;
-    padding-left: 50px;
     flex-direction: column;
 }
 
@@ -66,10 +64,14 @@
 .player-wrapper {
     margin-top: 40px;
     margin-bottom: 10px;
+    -moz-box-shadow: 3px 3px 5px 6px #ccc;
+    -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+    box-shadow: 2px 2px 3px 4px #ccc;
     width: 400px;
+    height: 225px;
     display: flex;
     flex-direction: column;
-    margin-left: 40px;
+    margin-left: 0px;
     justify-content: center;
 }
 
@@ -77,6 +79,10 @@
     margin-top: 40px;
     margin-bottom: 10px;
     width: 400px;
+    height: 225px;
+    -moz-box-shadow: 3px 3px 5px 6px #ccc;
+    -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+    box-shadow: 2px 2px 3px 4px #ccc;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -85,8 +91,12 @@
 .player-wrapper-large {
     margin-top: 40px;
     margin-bottom: 10px;
+    height: 394px;
     width: 700px;
     display: flex;
+    -moz-box-shadow: 3px 3px 5px 6px #ccc;
+    -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+    box-shadow: 2px 2px 3px 4px #ccc;
     flex-direction: column;
     justify-content: center;
 }
@@ -197,7 +207,7 @@
     z-index: 3;
     background-color: #FFB6C1;
     width: 400px;
-    margin-top: 13px;
+    margin-top: 15px;
     height: 5px;
     position: absolute;
 }

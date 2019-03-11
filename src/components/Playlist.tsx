@@ -13,11 +13,11 @@ interface PlayerItemState {
 
 class Playlist extends Component < PlaylistProps,
 PlayerItemState > {
-    private player : any;
+    private scrollRef : any;
     constructor(props : PlaylistProps) {
         super(props)
-        this.player = React.createRef();
         this.handler = this.handler.bind(this)
+        this.scrollRef = React.createRef();
     }
 
     state : PlayerItemState = {
@@ -25,21 +25,21 @@ PlayerItemState > {
         currentPlayingIndex: 1,
     }
 
-    handler = (key : string) => {
+    handler = (key: string) => {
         this.setState({currentPlaying: key})
     }
 
     onClickFullscreen = (id: number) => {
         this.setState({currentPlayingIndex: id})  
-        console.log(id)
+        window.scrollTo(0, this.scrollRef.current.offsetTop);
     }
 
     render() {
         const {currentPlaying, currentPlayingIndex} = this.state
         return (
-            <div className="video-player">
-                <div className="video-list">
-                    {this.props.playlist.map((element : any, key : any) => {
+            <div>
+                <div className="video-block">
+                    {this.props.playlist.map((element: any, key: any) => {
                             let playing = false
                             if (currentPlaying !== undefined && currentPlaying === key) {
                                 playing = true
@@ -58,13 +58,12 @@ PlayerItemState > {
                             height={element.frameHeight}
                             playsinline={false}
                             title={element.title}
-                            isplaying={playing}
                             handler={this.handler}
                             />
                         }, this)}
                 </div>
-                <div className="video-block">
-                    {this.props.playlist.map((element : any, key : any) => {
+                <div className="video-list">
+                    {this.props.playlist.map((element: any, key: any) => {
                             let playing = false
                             if (currentPlaying !== undefined && currentPlaying === key) {
                                 playing = true
@@ -83,13 +82,12 @@ PlayerItemState > {
                             height={element.frameHeight}
                             playsinline={false}
                             title={element.title}
-                            isplaying={playing}
                             handler={this.handler}
                             />
                         }, this)}
                 </div>
-                <div className="video-large">
-                {this.props.playlist.map((element : any, key : any) => {
+                <div ref={this.scrollRef} className="video-large">
+                {this.props.playlist.map((element: any, key: any) => {
                     if(key === currentPlayingIndex) {
                     return <ReactPlayer key={key}
                     item_id={key} 

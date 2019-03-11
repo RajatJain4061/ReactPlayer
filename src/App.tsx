@@ -27,7 +27,7 @@ class App extends Component {
             previewStopTime: '60',
             frameHeight: "100%",
             frameWidth: "100%"
-        }
+        },
     ];
 
     render() {
