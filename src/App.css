@@ -104,7 +104,7 @@
 .video-title {
     display: block;
     height: 370px;
-    margin-bottom: 300px;
+    margin-top: 10px;
     margin-left: 10px;
     font-size: 16px;
     color: #FFF;
@@ -118,14 +118,14 @@
 
 .nav-controls {
     width: 700px;
-    height: 25px;
-    margin-top: 180px;
+    height: 29px;
+    margin-top: -29px;
     align-items: center;
-    position: absolute;
+    display:block;
+    position: relative;
     align-self: center;
     flex-direction: row;
     justify-content: space-between;
-    display: flex;
 }
 
 .img-play-pause {
@@ -151,7 +151,7 @@
     z-index: 3;
     background-color: #FFB6C1;
     width: 700px;
-    margin-top: 14px;
+    margin-top: -34px;
     height: 5px;
     position: absolute;
 }
@@ -159,7 +159,7 @@
     z-index: 2;
     background-color: #585858;
     width: 700px;
-    margin-top: 14px;
+    margin-top: -34px;
     height: 5px;
     position: absolute;
 }
@@ -178,27 +178,30 @@
 
 .nav-controls-list {
     width: 400px;
-    height: 25px;
-    margin-top: 95px;
+    height: 22px;
+    margin-top: -22px ;
     align-items: center;
-    position: absolute;
+    position: relative ;
     align-self: center;
     flex-direction: row;
     justify-content: space-between;
-    display: flex;
+    display: block;
 }
 
 .img-expand-list {
     z-index: 3;
-    margin-left: 300px;
+    margin-left: 360px;
     margin-right: 20px;
+    display: block;
+    top: 0px;
+    position: absolute;
 }
 
 .progress-list {
     z-index: 3;
     background-color: #FFB6C1;
     width: 400px;
-    margin-top: 15px;
+    margin-top: 17px;
     height: 5px;
     position: absolute;
 }
@@ -207,7 +210,7 @@
     z-index: 3;
     background-color: #FFB6C1;
     width: 400px;
-    margin-top: 15px;
+    margin-top: 17px;
     height: 5px;
     position: absolute;
 }
@@ -226,7 +229,9 @@
 
 .playback-time-list {
     font-size: 12px;
-    margin-left: 10px;
+    margin-top: -18px;
+    display: block;
+    margin-left: 40px;
     font-weight: 700;
     color: #FFF;
 }
