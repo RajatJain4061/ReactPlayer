@@ -34,9 +34,6 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
 
     constructor(props: PlayerItemProps) {
         super(props);
-        this.togglePlayPause = this.togglePlayPause.bind(this);
-        this.togglePreview = this.togglePreview.bind(this);
-        this.stopPreview = this.stopPreview.bind(this);
         this.player = React.createRef();
         this.intervalHandle;
     }
@@ -44,7 +41,7 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
     state: PlayerItemState = {
         isPreviewing: false,
         playing: false,
-        currentTime: '',
+        currentTime: '00:00',
         volumeOn: true,
         loaded: 0,
         played: 0,
@@ -87,10 +84,6 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         this.setState({ playing: !this.state.playing, isPreviewing: !this.state.isPreviewing })
     }
 
-    seekTo = (e: any) => {
-        console.log(e)
-    }
-
     stopPreview = () => {
         if (this.player.current !== null) {
             if (this.state.isPreviewing && parseInt(Math.round(this.player.current.getCurrentTime()).toFixed(0)) === this.props.preview_stop_time) {
@@ -104,7 +97,7 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
     render = () => {
         const { playing, currentTime, loaded, played, volumeOn } = this.state;
 
-        var duration = '0';
+        var duration = '00:00';
         if (this.player.current !== null) {
             let totalTime = this.player.current.getDuration();
             let minutes = Math.floor(totalTime / 60)
@@ -113,7 +106,6 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
             var timeInSec = seconds < 10 ? '0' + seconds.toString() : seconds.toString();
             duration = timeInMin + ':' + timeInSec
         }
-
         const { handler, ...playerProps } = this.props
 
         return (
@@ -135,8 +127,8 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
                         <h2 className="playback-time">
                             {currentTime}/{duration}
                         </h2>
-                        <Progress className="progress" onClick={e => this.seekTo(e)} bar value={played} max={1} />
-                        <Progress className="progress-loaded" bar onClick={e => this.seekTo(e)} value={loaded} max={1} />
+                        <Progress className="progress"  bar value={played} max={1} />
+                        <Progress className="progress-loaded" bar  value={loaded} max={1} />
                     </div>
                 </div>
             </div>

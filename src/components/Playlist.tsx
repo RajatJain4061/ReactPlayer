@@ -40,7 +40,8 @@ PlayerItemState > {
             <div>
                 <div className="video-block">
                     {this.props.playlist.map((element: any, key: any) => {
-                            let playing = false
+                           if(key > 2 && key < 6 ) {
+                           let playing = false
                             if (currentPlaying !== undefined && currentPlaying === key) {
                                 playing = true
                             } else {
@@ -60,10 +61,12 @@ PlayerItemState > {
                             title={element.title}
                             handler={this.handler}
                             />
+                        }
                         }, this)}
                 </div>
                 <div className="video-list">
                     {this.props.playlist.map((element: any, key: any) => {
+                        if(key >= 0 && key < 3) {
                             let playing = false
                             if (currentPlaying !== undefined && currentPlaying === key) {
                                 playing = true
@@ -84,6 +87,7 @@ PlayerItemState > {
                             title={element.title}
                             handler={this.handler}
                             />
+                        }
                         }, this)}
                 </div>
                 <div ref={this.scrollRef} className="video-large">

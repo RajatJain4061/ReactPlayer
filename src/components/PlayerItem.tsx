@@ -36,10 +36,6 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
 
     constructor(props: PlayerItemProps) {
         super(props);
-        this.togglePlayPause = this.togglePlayPause.bind(this);
-        this.togglePreview = this.togglePreview.bind(this);
-        this.onViewExpand = this.onViewExpand.bind(this);
-        this.stopPreview = this.stopPreview.bind(this);
         this.player = React.createRef();
         this.intervalHandle;
     }
@@ -79,7 +75,8 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         this.props.current_playing(id)
     }
 
-    togglePreview = () => {
+    togglePreview = (e:any) => {
+        console.log(e.currentTarget.className)
         if (this.state.isPreviewing) {
             clearInterval(this.intervalHandle)
         } else {
@@ -112,7 +109,7 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
 
         const {  handler, list, current_playing, item_id, ...playerProps } = this.props
 
-        var duration = '0';
+        var duration = '00:00';
         if (this.player.current !== null) {
             let totalTime = this.player.current.getDuration();
             let minutes = Math.floor(totalTime / 60)
@@ -124,7 +121,7 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
 
         return (
             <div className="player-view">
-                <div className={list ? "player-wrapper" : "player-wrapper-block"} onMouseOver={this.togglePreview} onMouseOut={this.togglePreview}>
+                <div className={list ? "player-wrapper" : "player-wrapper-block"} onMouseOver={e => this.togglePreview(e)} onMouseOut={this.togglePreview}>
                     <ReactPlayer playsinline muted={!volumneOn}  {...playerProps} onProgress={e => this.progress(e)} ref={this.player} playing={playing} />
                     { list ?
                             <div className="nav-controls-list" >
