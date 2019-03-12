@@ -76,7 +76,6 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
     }
 
     togglePreview = (e:any) => {
-        console.log(e.currentTarget.className)
         if (this.state.isPreviewing) {
             clearInterval(this.intervalHandle)
         } else {
@@ -121,7 +120,7 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
 
         return (
             <div className="player-view">
-                <div className={list ? "player-wrapper" : "player-wrapper-block"} onMouseOver={e => this.togglePreview(e)} onMouseOut={this.togglePreview}>
+                <div className={list ? "player-wrapper" : "player-wrapper-block"} onMouseEnter={e => this.togglePreview(e)} onMouseLeave={this.togglePreview}>
                     <ReactPlayer playsinline muted={!volumneOn}  {...playerProps} onProgress={e => this.progress(e)} ref={this.player} playing={playing} />
                     { list ?
                             <div className="nav-controls-list" >

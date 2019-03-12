@@ -142,16 +142,18 @@
 .playback-time {
     font-size: 12px;
     width: 100px;
-    margin-left: 550px;
+    margin-left: 580px;
     font-weight: 700;
     color: #FFF;
+    margin-top: -20px;
+    position: absolute;
 }
 
 .progress {
     z-index: 3;
     background-color: #FFB6C1;
     width: 700px;
-    margin-top: -34px;
+    margin-top: 1px;
     height: 5px;
     position: absolute;
 }
@@ -159,7 +161,7 @@
     z-index: 2;
     background-color: #585858;
     width: 700px;
-    margin-top: -34px;
+    margin-top: 1px;
     height: 5px;
     position: absolute;
 }
@@ -193,7 +195,7 @@
     margin-left: 360px;
     margin-right: 20px;
     display: block;
-    top: 0px;
+    top: -5px;
     position: absolute;
 }
 
@@ -229,7 +231,7 @@
 
 .playback-time-list {
     font-size: 12px;
-    margin-top: -18px;
+    margin-top: -5px;
     display: block;
     margin-left: 40px;
     font-weight: 700;
@@ -251,4 +253,7 @@
 .img-volume-block {
     margin-left: 10px;
     z-index: 3;
+    display: block;
+    position: absolute;
+    top: -5px;
 }
