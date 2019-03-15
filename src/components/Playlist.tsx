@@ -10,6 +10,7 @@ interface PlayerItemState {
     currentPlaying : any,
     currentPlayingIndex : number,
     videoPlaylist : any
+    playing: boolean,
 }
 
 class Playlist extends Component < PlaylistProps,
@@ -26,7 +27,8 @@ PlayerItemState > {
     state : PlayerItemState = {
         currentPlaying: undefined,
         currentPlayingIndex: 1,
-        videoPlaylist: this.props.playlist
+        videoPlaylist: this.props.playlist,
+        playing: false,
     }
 
     togglePlayPause = (id : number) => {
@@ -55,10 +57,11 @@ PlayerItemState > {
     onClickFullscreen = (id : number) => {
         this.setState({currentPlayingIndex: id})
         window.scrollTo(0, this.scrollRef.current.offsetTop);
+        this.setState({playing: true})
     }
 
     render() {
-        const {currentPlaying, currentPlayingIndex, videoPlaylist} = this.state
+        const {currentPlaying, currentPlayingIndex, videoPlaylist, playing} = this.state
         return (
             <div>
                 <div className="video-block">
@@ -124,6 +127,7 @@ PlayerItemState > {
                                 key={key}
                                 item_id={key}
                                 url={element.url}
+                                currentlyPlaying={playing}
                                 preview_start_time={element.previewStartTime}
                                 preview_stop_time={element.previewStopTime}
                                 width={element.frameWidth}

@@ -13,6 +13,7 @@ interface PlayerItemProps {
     preview_stop_time: number,
     width: string,
     height: string,
+    currentlyPlaying: boolean,
     playsinline: boolean,
     title: string,
     handler: any,
@@ -45,6 +46,10 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         volumeOn: true,
         loaded: 0,
         played: 0,
+    }
+
+    componentDidMount() {
+        this.setState({playing: this.props.currentlyPlaying})
     }
 
     togglePlayPause = () => {
