@@ -14,6 +14,9 @@ interface PlayerItemProps {
     preview_stop_time: number,
     width: string,
     list: boolean,
+    id: number,
+    playing: boolean,
+    togglePlayPause: any,
     height: string,
     playsinline: boolean,
     current_playing: any,
@@ -75,19 +78,6 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         this.props.current_playing(id)
     }
 
-    togglePreview = (e:any) => {
-        if (this.state.isPreviewing) {
-            clearInterval(this.intervalHandle)
-        } else {
-            if (this.player.current !== null) {
-                this.player.current.seekTo(this.props.preview_start_time)
-            }
-            this.intervalHandle = setInterval(this.stopPreview, 1000);
-        }
-
-        this.setState({ playing: !this.state.playing, isPreviewing: !this.state.isPreviewing })
-    }
-
     stopPreview = () => {
         this.player.current
         if (this.player.current !== null) {
@@ -104,9 +94,9 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
     }
 
     render = () => {
-        const { playing, played, volumneOn } = this.state;
+        const {  played, volumneOn } = this.state;
 
-        const {  handler, list, current_playing, item_id, ...playerProps } = this.props
+        const {  handler, list, current_playing, item_id, id, togglePlayPause, playing, ...playerProps } = this.props
 
         var duration = '00:00';
         if (this.player.current !== null) {
@@ -120,7 +110,7 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
 
         return (
             <div className="player-view">
-                <div className={list ? "player-wrapper" : "player-wrapper-block"} onMouseEnter={e => this.togglePreview(e)} onMouseLeave={this.togglePreview}>
+                <div className={list ? "player-wrapper" : "player-wrapper-block"} onMouseEnter={()=>togglePlayPause(id)} onMouseLeave={()=>togglePlayPause(id)}>
                     <ReactPlayer playsinline muted={!volumneOn}  {...playerProps} onProgress={e => this.progress(e)} ref={this.player} playing={playing} />
                     { list ?
                             <div className="nav-controls-list" >
