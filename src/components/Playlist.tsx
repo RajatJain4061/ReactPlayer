@@ -144,7 +144,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => {
   }
   const mapStateToProps = (state:any) => {
     return {
-    playing: state.playing,
+    playing: state.rootReducer.playing,
     }
    }
 

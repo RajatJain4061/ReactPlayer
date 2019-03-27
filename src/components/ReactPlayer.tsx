@@ -137,7 +137,6 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => {
   }
 
 const mapStateToProps = (state:any) => {
-    console.log(state.rootReducer.playing)
     return {
     playing: state.rootReducer.playing,
     }

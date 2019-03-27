@@ -1,1 +1,2 @@
 export const TOGGLE_PLAYER = "TOGGLE_PLAYER";
+export const TOGGLE_PLAYER_OFF = "TOGGLE_PLAYER_OFF"
