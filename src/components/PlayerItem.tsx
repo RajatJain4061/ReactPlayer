@@ -2,11 +2,11 @@ import React from 'react';
 import ReactPlayer from 'react-player';
 import './../App.css';
 import expand from '../icons/expand.png';
-import { findDOMNode } from 'react-dom';
-import screenfull from 'screenfull';
 import { Progress } from 'reactstrap';
 import volume from '../icons/volume.png';
 import mute from '../icons/mute.png';
+import { Dispatch } from 'redux';
+
 
 interface PlayerItemProps {
     item_id: number,

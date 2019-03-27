@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import PlayerItem from './PlayerItem';
 import ReactPlayer from './ReactPlayer';
-
-interface PlaylistProps {
-    playlist : any;
-}
+import videoPlaylist from '../data/playlist';
+import {connect} from 'react-redux';
+import {togglePlayer} from '../actions/playerActions';
+import {Action} from '../actions/playerActions'
+import { Dispatch } from 'redux';
 
 interface PlayerItemState {
     currentPlaying : any,
@@ -12,11 +13,11 @@ interface PlayerItemState {
     videoPlaylist : any
     playing: boolean,
 }
-
-class Playlist extends Component < PlaylistProps,
+type ReduxType = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapDispatchToProps>;
+class Playlist extends Component < ReduxType,
 PlayerItemState > {
     private scrollRef : any;
-    constructor(props : PlaylistProps) {
+    constructor(props : ReduxType) {
         super(props)
         this.handler = this
             .handler
@@ -27,8 +28,12 @@ PlayerItemState > {
     state : PlayerItemState = {
         currentPlaying: undefined,
         currentPlayingIndex: 1,
-        videoPlaylist: this.props.playlist,
+        videoPlaylist: videoPlaylist,
         playing: false,
+    }
+
+    stopPlayerView = () => {
+        this.setState({currentPlaying: false})
     }
 
     togglePlayPause = (id : number) => {
@@ -40,7 +45,9 @@ PlayerItemState > {
                     if (element.playing === true) {
                         element.playing = false
                     } else {
+                        this.props.togglePlayer(false)
                         element.playing = true
+                        this.setState({playing: false})
                     }
                 } else {
                     element.playing = false
@@ -121,26 +128,25 @@ PlayerItemState > {
                     }, this)}
                 </div>
                 <div ref={this.scrollRef} className="video-large">
-                    {videoPlaylist.map((element : any, key : any) => {
-                        if (key === currentPlayingIndex) {
-                            return <ReactPlayer
-                                key={key}
-                                item_id={key}
-                                url={element.url}
-                                currentlyPlaying={playing}
-                                preview_start_time={element.previewStartTime}
-                                preview_stop_time={element.previewStopTime}
-                                width={element.frameWidth}
-                                height={element.frameHeight}
-                                playsinline={false}
-                                title={element.title}
-                                handler={this.handler}/>
+                    {
+                         <ReactPlayer/>
                         }
-                    }, this)}
                 </div>
             </div>
         )
     }
 }
 
-export default Playlist
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => {
+    return {
+    togglePlayer: (payload:any) =>dispatch(togglePlayer(payload))
+    }
+  }
+  const mapStateToProps = (state:any) => {
+    return {
+    playing: state.playing,
+    }
+   }
+
+
+export default connect(mapStateToProps,mapDispatchToProps) (Playlist)

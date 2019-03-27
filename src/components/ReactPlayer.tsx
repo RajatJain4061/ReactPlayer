@@ -6,19 +6,14 @@ import pause from '../icons/pause.png';
 import volume from '../icons/volume.png';
 import mute from '../icons/mute.png';
 import { Progress } from 'reactstrap';
-
-interface PlayerItemProps {
-    item_id: string,
-    preview_start_time: number,
-    preview_stop_time: number,
-    width: string,
-    height: string,
-    currentlyPlaying: boolean,
-    playsinline: boolean,
-    title: string,
-    handler: any,
-    url: string,
-}
+import {connect} from 'react-redux';
+import {togglePlayer} from '../actions/playerActions';
+import videoPlaylist from '../data/playlist';
+import {Action} from '../actions/playerActions';
+import {AppState} from '../store'
+import {togglePlayerAction} from '../actions/playerActions'
+import { Dispatch } from 'redux';
+import { stat } from 'fs';
 
 interface PlayerItemState {
     isPreviewing: boolean,
@@ -27,13 +22,15 @@ interface PlayerItemState {
     loaded: number;
     played: number;
     currentTime: string,
+    playlist: any
 }
 
-class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> {
+type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> ;
+class PlayerItem extends React.Component<ReduxType, PlayerItemState> {
     private player: React.RefObject<ReactPlayer>;
     private intervalHandle: ReturnType<typeof setTimeout> = setTimeout(() => '', 1000);
 
-    constructor(props: PlayerItemProps) {
+    constructor(props: ReduxType) {
         super(props);
         this.player = React.createRef();
         this.intervalHandle;
@@ -46,19 +43,27 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         volumeOn: true,
         loaded: 0,
         played: 0,
+        playlist: videoPlaylist
     }
 
+    componentWillReceiveProps(nextProps:any){
+        console.log(nextProps)
+        if(this.props.playing !== nextProps.playing){ 
+             this.setState({playing:nextProps.playing })
+        }
+   }
+
     componentDidMount() {
-        this.setState({playing: this.props.currentlyPlaying})
+        this.setState({playing: this.props.playing})
     }
 
     togglePlayPause = () => {
+     var player = this.props.togglePlayer(!this.state.playing)
         this.setState({
-            playing: !this.state.playing,
+            playing: player.playing,
             isPreviewing: this.state.playing
         }, () => {
             if (this.state.playing) {
-                this.props.handler(this.props.item_id)
             }
         })
     }
@@ -77,30 +82,9 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
         this.setState({ volumeOn: !this.state.volumeOn })
     }
 
-    togglePreview = () => {
-        if (this.state.isPreviewing) {
-            clearInterval(this.intervalHandle)
-        } else {
-            if (this.player.current !== null) {
-                this.player.current.seekTo(this.props.preview_start_time)
-            }
-            this.intervalHandle = setInterval(this.stopPreview, 1000);
-        }
-        this.setState({ playing: !this.state.playing, isPreviewing: !this.state.isPreviewing })
-    }
-
-    stopPreview = () => {
-        if (this.player.current !== null) {
-            if (this.state.isPreviewing && parseInt(Math.round(this.player.current.getCurrentTime()).toFixed(0)) === this.props.preview_stop_time) {
-                this.setState({ isPreviewing: false, playing: false }, () => {
-                    clearInterval(this.intervalHandle)
-                })
-            }
-        }
-    }
 
     render = () => {
-        const { playing, currentTime, loaded, played, volumeOn } = this.state;
+        const { currentTime,playing, loaded, played, volumeOn,playlist  } = this.state;
 
         var duration = '00:00';
         if (this.player.current !== null) {
@@ -111,13 +95,15 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
             var timeInSec = seconds < 10 ? '0' + seconds.toString() : seconds.toString();
             duration = timeInMin + ':' + timeInSec
         }
-        const { handler, ...playerProps } = this.props
-
+      
         return (
-            <div className="player-view">
+              playlist.map((item:any,index:any) => {
+                  if(index == 0) {
+                return(
+            <div key={index} className="player-view">
                 <div className="player-wrapper-large" >
-                    <ReactPlayer {...playerProps} muted={!volumeOn} onProgress={e => this.progress(e)} ref={this.player} playing={playing} />
-                    <h2 className="video-title">{this.props.title}</h2>
+                    <ReactPlayer url={item.url} width={item.frameWidth} height={item.frameHeight} muted={!volumeOn} onProgress={e => this.progress(e)} ref={this.player} playing={playing} />
+                    <h2 className="video-title">{item.title}</h2>
                     {!playing ? <div className="controls">
                         <img className="imgPlay" src={play} onClick={this.togglePlayPause} height="35" width="35" />
                     </div> : null}
@@ -137,8 +123,24 @@ class PlayerItem extends React.Component<PlayerItemProps, PlayerItemState, any> 
                     </div>
                 </div>
             </div>
+                )
+                    }
+            }) 
         );
     }
 }
 
-export default PlayerItem;
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => {
+    return {
+    togglePlayer: (payload:any) =>dispatch(togglePlayer(payload))
+    }
+  }
+
+const mapStateToProps = (state:any) => {
+    console.log(state.rootReducer.playing)
+    return {
+    playing: state.rootReducer.playing,
+    }
+   }
+
+export default connect(mapStateToProps,mapDispatchToProps)(PlayerItem);
