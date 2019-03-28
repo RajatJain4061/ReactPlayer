@@ -28,7 +28,7 @@ const videoPlaylist = [
         frameWidth: "100%"
     },
     {
-        url: 'https://d3c33hcgiwev3.cloudfront.net/jZeTgPItEeaCmw6hz_dhfA.processed/full/360p/index.webm?Expires=1552521800&Signature=cqVe0rQnBLw-FpXZuOYHapv~5jOFHIAiwwRCPW4r2nWfZ8~QlJJcWvFchLpOvBX4sDlGtPgqAiFOY1lA~IoWjgz~-hrMAyRMuFsB9ANyuz~333IFuTr2L~Ekpax-SzpbKAs5rbUpet6lf4AQHOqygvdXTm97RMxdebFwWrArCJE_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A',
+        url: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
         id: 4,
         title: 'Jungle King',
         previewStartTime: '0',

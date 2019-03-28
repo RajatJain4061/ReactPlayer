@@ -7,7 +7,7 @@ import volume from '../icons/volume.png';
 import mute from '../icons/mute.png';
 import { Progress } from 'reactstrap';
 import {connect} from 'react-redux';
-import {togglePlayer} from '../actions/playerActions';
+import {togglePlayer, toggleVideo} from '../actions/playerActions';
 import videoPlaylist from '../data/playlist';
 import {Action} from '../actions/playerActions';
 import {AppState} from '../store'
@@ -22,7 +22,8 @@ interface PlayerItemState {
     loaded: number;
     played: number;
     currentTime: string,
-    playlist: any
+    playlist: any,
+    id: number,
 }
 
 type ReduxType = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> ;
@@ -43,13 +44,13 @@ class PlayerItem extends React.Component<ReduxType, PlayerItemState> {
         volumeOn: true,
         loaded: 0,
         played: 0,
-        playlist: videoPlaylist
+        playlist: videoPlaylist,
+        id: 1,
     }
 
     componentWillReceiveProps(nextProps:any){
-        console.log(nextProps)
-        if(this.props.playing !== nextProps.playing){ 
-             this.setState({playing:nextProps.playing })
+        if(this.props.playing !== nextProps.playing || this.props.id!==nextProps.id){ 
+             this.setState({playing:nextProps.playing,id: nextProps.id })
         }
    }
 
@@ -84,7 +85,7 @@ class PlayerItem extends React.Component<ReduxType, PlayerItemState> {
 
 
     render = () => {
-        const { currentTime,playing, loaded, played, volumeOn,playlist  } = this.state;
+        const { currentTime,playing, loaded, played, volumeOn,playlist,id  } = this.state;
 
         var duration = '00:00';
         if (this.player.current !== null) {
@@ -98,7 +99,7 @@ class PlayerItem extends React.Component<ReduxType, PlayerItemState> {
       
         return (
               playlist.map((item:any,index:any) => {
-                  if(index == 0) {
+                  if(index == id) {
                 return(
             <div key={index} className="player-view">
                 <div className="player-wrapper-large" >
@@ -132,13 +133,15 @@ class PlayerItem extends React.Component<ReduxType, PlayerItemState> {
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => {
     return {
-    togglePlayer: (payload:any) =>dispatch(togglePlayer(payload))
+    togglePlayer: (payload:any) =>dispatch(togglePlayer(payload)),
+    toggleVideo: (payload:any) => dispatch(toggleVideo(payload))
     }
   }
 
 const mapStateToProps = (state:any) => {
     return {
     playing: state.rootReducer.playing,
+    id: state.rootReducer.id,
     }
    }
 

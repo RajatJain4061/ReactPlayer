@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import PlayerItem from './PlayerItem';
 import ReactPlayer from './ReactPlayer';
+import SinglePlayerItem from './SinglePlayerItem';
 import videoPlaylist from '../data/playlist';
 import {connect} from 'react-redux';
-import {togglePlayer} from '../actions/playerActions';
+import {togglePlayer, toggleVideo} from '../actions/playerActions';
 import {Action} from '../actions/playerActions'
 import { Dispatch } from 'redux';
 
@@ -63,6 +64,8 @@ PlayerItemState > {
 
     onClickFullscreen = (id : number) => {
         this.setState({currentPlayingIndex: id})
+        this.props.toggleVideo(id)
+        this.props.togglePlayer(true)
         window.scrollTo(0, this.scrollRef.current.offsetTop);
         this.setState({playing: true})
     }
@@ -127,6 +130,11 @@ PlayerItemState > {
                         }
                     }, this)}
                 </div>
+                <div className="video-block">
+                 {
+                        <SinglePlayerItem/>
+                 }
+                </div>
                 <div ref={this.scrollRef} className="video-large">
                     {
                          <ReactPlayer/>
@@ -139,7 +147,8 @@ PlayerItemState > {
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => {
     return {
-    togglePlayer: (payload:any) =>dispatch(togglePlayer(payload))
+    togglePlayer: (payload:any) =>dispatch(togglePlayer(payload)),
+    toggleVideo: (payload:any) => dispatch(toggleVideo(payload))
     }
   }
   const mapStateToProps = (state:any) => {
